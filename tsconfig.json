@@ -29,6 +29,8 @@
     // Recommended Options
     "esModuleInterop": true,
     "strict": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
     // "allowImportingTsExtensions": true,
     // "noEmit": true,
     // "verbatimModuleSyntax": false,
