@@ -5,7 +5,7 @@ export const getProducts = async (req: Request, res: Response) => {
   try {
     const products = await Product.findAll({
       order: [
-        ['id', 'DESC']
+        ['id', 'ASC']
       ]
     }) 
     res.json({data: products})
@@ -38,4 +38,21 @@ export const createProduct = async (req : Request, res : Response) => {
   } catch (error) {
     console.log(error);
   }
+}
+
+export const updateProduct = async (req : Request, res : Response) => {
+  const { id } = req.params
+  const product = await Product.findByPk(Number(id))
+  
+  if(!product){
+    return res.status(404).json({
+      error: 'Product not found'
+    })
+  }
+
+  //Actualizar
+  await product.update(req.body)
+  await product.save()
+
+  res.json({data: product})
 }

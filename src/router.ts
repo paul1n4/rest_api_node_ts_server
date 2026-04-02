@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { body, param } from "express-validator"
-import { createProduct, getProducts, getProductById } from "./handlers/product"
+import { createProduct, getProducts, getProductById, updateProduct } from "./handlers/product"
 import { handleInputErrors } from "./middleware"
 
 const router = Router()
@@ -25,9 +25,19 @@ router.post('/',
   createProduct
 )
 
-router.put('/', (req, res) => {
-  res.json('Desde PUT')
-})
+router.put('/:id', 
+  //Validación
+  body('name')
+    .notEmpty().withMessage('Product name cannot be empty'),
+  body('price')
+    .isNumeric().withMessage('Invalid value, price has to be a number')
+    .notEmpty().withMessage('Product price cannot be empty')
+    .custom(value => value > 0).withMessage('Invalid price'),
+  body('availability')
+    .isBoolean().withMessage('Invalid value for availability'),
+  handleInputErrors,
+  updateProduct
+)
 
 router.patch('/', (req, res) => {
   res.json('Desde PATCH')
